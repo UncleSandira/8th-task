@@ -1,3 +1,6 @@
-#start of code
-print('hello world')
-print('brina ren')
+import sqlite3
+
+db = sqlite3.connect('Team.db')
+cursor=db.cursor()
+
+playerName = input("Enter player name: ")
