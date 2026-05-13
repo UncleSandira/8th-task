@@ -19,4 +19,10 @@ else:
     playerID = result[0]
     positionID = result[1]
     teamID = result[2]
-    
+
+    print(f"Player information for {name}")
+    print(f"Player ID: {playerID}")
+    print(f"Position ID: {positionID}")
+    print(f"Team ID: {teamID}")
+
+db.close()
