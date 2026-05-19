@@ -10,7 +10,7 @@ def show_player():
         name = playername.title()
 
         query = """
-        SELECT playerID, positionID, teamID FROM player
+        SELECT playerID, positionID, teamID, Goals FROM player
         WHERE playerName = ?"""
 
         cursor.execute(query, (name,))
@@ -22,11 +22,16 @@ def show_player():
             playerID = result[0]
             positionID = result[1]
             teamID = result[2]
+            Goals = result[3]
 
+         
         print(f"Player information for {name}")
         print(f"Player ID: {playerID}")
         print(f"Position ID: {positionID}")
         print(f"Team ID: {teamID}")
+        print(f'Goals scored : {Goals}')
+
+
 def show_team():
     if choose == "Team":
         teamName = input('Enter name of the team: ')
@@ -45,51 +50,66 @@ def show_team():
             print(f"Team matching {team}")
         
         for people in result2:
-                print(people[0])
+            print(people[0])
             
-def show_id():
-    if choose == 'Id':
-        playerID = int(input('Enter ID of player'))
-        id = playerID.title()
+
+def show_pos_name():
+    if choose == 'Position Info':
+        positionID = int(input('Enter position ID: '))
+        id = positionID
 
         query3 = """
-        Select * From player 
-        Where playerID = ?"""
+        Select positionName FROM position
+        Where positionID = ?"""
 
-        cursor.excute(query3, (playerID))
-        result3 = cursor.fethone()
+        cursor.execute(query3, (id,))
+        result3 = cursor.fetchone()
 
         if result3 is None:
-            print(f'Player with that ID is not in our database.')
+            print('There is no such position in out database.')
         else:
-            playerID = result3[0]
-            playerName = result3[1]
-            positionID = result3[2]
-            positionName = result3[3]
-            teamID = result3[4]
-            teamName = result3[5]
-            Goals = result3[6]
-
-            print(f'Information for the player with the ID {id}')
-            print(f'Player ID : {playerID}')
-            print(f'Player Name : {playerName} ')
-            print(f'Position ID : {positionID}')
-            print(f'Position Name : {positionName}')
-            print(f'Team ID : {teamID}')
-            print(f'Team name : {teamName}')
-            print(f'Goals scored : {Goals}')
-def
+            positionName = result3[0]
+            
+            print(f'Position information for position {id}')
+            print(f'Position ID: {positionID}')
+            print(f'Position Name: {positionName}')
 
 
+def show_team_name():
+    if choose == 'Team Name':
+        teamId = int(input('Enter team ID:'))
+        tID = teamId.upper()
 
-print('''Type "Team" if you want to check players in a certain team
-or type "Stats" if you want to chekc a certain players stats''')
+        query4 = '''
+        SELECT teamName FROM team
+        WHERE teamID = ?'''
 
-choose = input('Team/Stats: ').title()
+        cursor.execute(query4, (tID,))
+        result4 = cursor.fetchone()
+        if result4 is None:
+            print('There is no such team with this id in ourt database.')
+        else:
+            teamName = result4[0]
+
+            print(f'Team information for team {tID}')
+            print(f'Team ID: {tID}')
+            print(f'Team Name: {teamName}')
+
+
+print('''Type "Team" if you want to check players in a certain team,
+       type "Stats" if you want to chekc a certain players stats, 
+      type "Position Info" if you want to check the position name of a certain position ID,
+      type "Team Name" if you want to check the team name of a certain team ID''')
+
+choose = input('Team/Stats/Position Info/Team Name: ').title()
 
 if choose == 'Stats':
     show_player()
 elif choose == 'Team':
     show_team()
+elif choose == 'Position Info':
+    show_pos_name()
+elif choose == 'Team Name':
+    show_team_name()
 
 db.close()
